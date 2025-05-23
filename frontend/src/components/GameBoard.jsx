@@ -47,6 +47,13 @@ const GameBoard = () => {
     );
   }
 
+  function resetGame() {
+  setBoard(Array(3).fill(Array(3).fill(null)));
+  setPlayerMoves({ 1: [], 2: [] });
+  setCurrentPlayer(1);
+  setWinner(null);
+}
+
   function handleClick(rowIdx,colIdx){
     if (board[rowIdx][colIdx] || winner) return;
 
@@ -98,11 +105,37 @@ const GameBoard = () => {
               )
             )
         ))}
-      
     </div>
-    <div className="text-center">
-      <h2 className="mt-4 text-lg">Player {currentPlayer} Turn ({currentPlayer === 1 ? "🐶🐱🐭" : "🍕🍟🍩"})</h2>
-    </div>
+    
+
+
+{winner
+? 
+(
+  <div className="mt-4 text-center">
+    <h2 className="text-xl font-bold mb-2 text-green-600">🎉 Player {winner} Wins!</h2>
+    <button 
+      onClick={resetGame}
+      className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+      Play Again
+    </button>
+  </div>
+  
+)
+:
+(
+  <div className="text-center mt-4 ">
+    <button
+      onClick={resetGame}
+      className='bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg'
+    >
+      Reset
+    </button>
+  </div>
+)
+}
+
+    
    </>
   )
 }

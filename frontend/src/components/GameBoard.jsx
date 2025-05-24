@@ -122,6 +122,7 @@ function home(){
       <>
         <CategorySelection 
           player={currentSelectingPlayer}
+          playerSelections ={playerSelections}
           emojiSelect={(emojis) => {
             setPlayerSelections(prev => ({...prev,[currentSelectingPlayer]: emojis}));
             
@@ -156,19 +157,20 @@ function home(){
                 const baseColor =
                   item?.player === 1
                     ? isOldest
-                      ? 'bg-blue-200'
-                      : 'bg-blue-400'
+                      ? 'bg-blue-300'
+                      : 'bg-blue-600'
                     : item?.player === 2
                     ? isOldest
-                      ? 'bg-red-200'
-                      : 'bg-red-400'
+                      ? 'bg-red-300'
+                      : 'bg-red-600'
                     : '';
 
                 return (
                   <div
                     key={`${rowIdx}-${colIdx}`}
                     onClick={() => handleClick(rowIdx, colIdx)}
-                    className={`w-20 h-20 md:w-40 md:h-40 border-2 border-gray-400 rounded-lg flex items-center justify-center text-7xl ${baseColor}`}
+                    className={`w-20 h-20 md:w-40 md:h-40 border-2 border-gray-400 rounded-lg flex items-center justify-center text-7xl  ${baseColor} 
+                      ${!item && (currentPlayer === 1? "hover:border-blue-500" : "hover:border-red-500")}`}
                   >
                     <div>{item?.emoji}</div>
                   </div>

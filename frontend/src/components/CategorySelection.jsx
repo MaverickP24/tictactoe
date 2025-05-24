@@ -1,15 +1,14 @@
 import React from 'react'
 
-
-const emojiCategory ={
-  Animals : ["🦁","🐯","🐼"],
-  Food : ["🍔","🍕","🥤"],
-  Objects : ["📱","📺","📚"],
-  Nature : ["🌞","🌴","🌻"],
-  Sports : ["🏀","🏈","🏊"],
-  Travel : ["🗺️","🛫️","🛬️"],
-}
-
+const click = new Audio("/clickSound.wav")
+const emojiCategory = {
+  Animals: ["🦁", "🐯", "🐼", "🐶", "🐱", "🐰", "🐸", "🦊", "🐻", "🐨"],
+  Food: ["🍔", "🍕", "🥤", "🍟", "🍩", "🍪", "🍗", "🍎", "🍇", "🍣"],
+  Objects: ["📱", "📺", "📚", "💡", "🖊️", "💻", "📷", "📦", "🕰️", "🧸"],
+  Nature: ["🌞", "🌴", "🌻", "🌧️", "🌈", "🌊", "🌵", "🍁", "🌼", "❄️"],
+  Sports: ["🏀", "🏈", "🏊", "⚽", "🎾", "🏓", "🏸", "🥊", "🏒", "⛷️"],
+  Travel: ["🗺️", "🛫️", "🛬️", "🚗", "🚆", "🚢", "🚁", "🛳️", "🏝️", "🗽"]
+};
 const CategorySelection = ({emojiSelect,player}) => {
   return (
     <div>
@@ -20,9 +19,11 @@ const CategorySelection = ({emojiSelect,player}) => {
           <button
             key={category}
             className=" border-2 border-gray-400 rounded-lg px-6 py-4 text-lg"
-            onClick={() => emojiSelect(emojis)}
+            onClick={() => {
+              click.play();
+              emojiSelect(emojis)}}
           >
-            {category}:{emojis.join(" ")}
+            {category}
           </button>
         ))}
       </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import CategorySelection from './CategorySelection';
 
 const emoji = ["🐐","🐫","🐈"];
 const playerCategory = {
@@ -18,6 +19,8 @@ const GameBoard = () => {
   const [currentPlayer,setCurrentPlayer] = useState(1);
   
   const [winner, setWinner] = useState(null)
+  const [Selection, setSelection] = useState(false);
+  const [playerSelections, setPlayerSelections] = useState({ 1: null,2:null });
   
   
   function checkWin(board, player) {
@@ -52,7 +55,17 @@ const GameBoard = () => {
   setPlayerMoves({ 1: [], 2: [] });
   setCurrentPlayer(1);
   setWinner(null);
-}
+  }
+
+  function home(){
+    setBoard(Array(3).fill(Array(3).fill(null)));
+    setPlayerMoves({ 1: [], 2: [] });
+    setCurrentPlayer(1);
+    setWinner(null);
+    setPlayerSelections({ 1: null,2:null })
+    setSelection(false);
+    
+  }
 
   function handleClick(rowIdx,colIdx){
     if (board[rowIdx][colIdx] || winner) return;
@@ -61,7 +74,7 @@ const GameBoard = () => {
     const newboard = board.map(row=>[...row]);
     const newMoves = {...playerMoves};
     
-    const emojiPlayer = playerCategory[currentPlayer]
+    const emojiPlayer = playerSelections[currentPlayer]
     const randomEmoji  = emojiPlayer[Math.floor(Math.random()* emoji.length)];
     
     
@@ -69,7 +82,6 @@ const GameBoard = () => {
       const [oldRow,oldCol] = newMoves[currentPlayer][0]
       newboard[oldRow][oldCol] = null;
       newMoves[currentPlayer].shift();
-      
     }
     
     newboard[rowIdx][colIdx] = 
@@ -94,14 +106,34 @@ const GameBoard = () => {
 
   }
 
+  if (!Selection){
+    const currentSelectingPlayer = playerSelections[1] ? 2 : 1;
+    return (
+      <>
+        <CategorySelection 
+          player={currentSelectingPlayer}
+          emojiSelect={(emojis) => {
+            setPlayerSelections(prev => ({...prev,[currentSelectingPlayer]: emojis}));
+            
+            if (playerSelections[1] && currentSelectingPlayer === 2) {
+              setSelection(true);
+            }
+          }}
+        />
+      </>
+    )
+  }
+
   return (
    <>
+
+   
    
     <div className='grid grid-cols-3 gap-5'>
       
         {board.map((row,rowIdx)=>(
           row.map((item,colIdx)=>(
-                  <div key={`${rowIdx}-${colIdx}`} onClick={()=>handleClick(rowIdx,colIdx)} className="w-20 h-20 bg-white border-2 border-gray-400 rounded-lg flex items-center justify-center text-2xl">{item?.emoji}</div>
+                  <div key={`${rowIdx}-${colIdx}`} onClick={()=>handleClick(rowIdx,colIdx)} className="w-20 h-20 bg-white border-2 border-gray-400 rounded-lg flex items-center justify-center text-5xl">{item?.emoji}</div>
               )
             )
         ))}
@@ -111,9 +143,15 @@ const GameBoard = () => {
 
 {winner
 ? 
-(
-  <div className="mt-4 text-center">
+( 
+  
+  <div className="mt-4 text-center space-x-5">
     <h2 className="text-xl font-bold mb-2 text-green-600">🎉 Player {winner} Wins!</h2>
+    <button 
+      onClick={home}
+      className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+      Home
+    </button>
     <button 
       onClick={resetGame}
       className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
@@ -124,7 +162,12 @@ const GameBoard = () => {
 )
 :
 (
-  <div className="text-center mt-4 ">
+  <div className="text-center mt-4 space-x-4">
+    <button 
+      onClick={home}
+      className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">
+      Home
+    </button>
     <button
       onClick={resetGame}
       className='bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg'
@@ -134,8 +177,6 @@ const GameBoard = () => {
   </div>
 )
 }
-
-    
    </>
   )
 }

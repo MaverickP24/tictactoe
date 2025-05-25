@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import CategorySelection from './CategorySelection';
+import AnimatedTitle from './AnimatedTitle';
 
 const emoji = ["🐐","🐫","🐈"];
 const playerCategory = {
@@ -142,7 +143,7 @@ function home(){
     {/* <div className="text-center w-40 h-70 border-gray-400 border-2 m-20 ">hii</div> */}
 
         <div>
-          <div className="text-center font-bold">Moves : {MovesCount}</div>
+          <div className="flex"><div className="text-center text-2xl py-1 px-3 mb-3 border-2 rounded-lg m-auto bg-amber-600">Total Moves : {MovesCount}</div></div>
           
           <div className='grid grid-cols-3 gap-5'>
             
@@ -157,12 +158,12 @@ function home(){
                 const baseColor =
                   item?.player === 1
                     ? isOldest
-                      ? 'bg-blue-300'
-                      : 'bg-blue-600'
+                      ? 'bg-[rgba(37,99,235,0.3)]'
+                      : 'bg-[rgba(37,99,235,0.3)]'
                     : item?.player === 2
                     ? isOldest
-                      ? 'bg-red-300'
-                      : 'bg-red-600'
+                      ? 'bg-[rgba(220,38,38,0.5)]'
+                      : 'bg-[rgba(220,38,38,0.5)]'
                     : '';
 
                 return (
@@ -191,7 +192,10 @@ function home(){
 ( 
   
   <div className="mt-4 text-center space-x-5 bg-[url('/background.jpg')] bg-cover bg-center w-screen min-h-screen absolute left-0 -top-4 p-10">
-    <h1 className="text-8xl text-[#DFDFF0] text-center py-10 hero-heading special-font ">Bli<b>n</b>k T<b>A</b>c T<b>o</b>e</h1>
+          <AnimatedTitle
+            title={`B l i <b>n</b> k T<b>A</b>c T<b>o</b>e`}
+            containerClass="text-8xl text-[#DFDFF0] text-center pb-10 hero-heading special-font"
+          />
     <h2 className="text-3xl font-bold mb-2 text-green-600 ">Congratulations</h2>
     <h2 className='text-3xl text-fuchsia-100 py-6'>Player
       <br/>

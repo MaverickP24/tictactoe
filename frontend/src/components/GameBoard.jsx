@@ -203,21 +203,10 @@ function home(){
           <div className="flex"><div className="text-center text-2xl py-1 px-3 mb-3 border-2 rounded-lg m-auto bg-amber-600">Total Moves : {MovesCount}</div></div>
 
           <div className="flex justify-center gap-6 mb-4">
-  <div
-    className={`px-6 py-2 rounded-xl text-lg font-semibold transition-all duration-300 ${
-      currentPlayer === 1 ? "bg-blue-600 text-amber-50 stroke-1 stroke-black shadow-lg scale-105" : "bg-gray-200"
-    }`}
-  >
-    Player 1
+  <div className={`px-6 py-2 rounded-xl text-lg font-semibold transition-all duration-300 ${currentPlayer === 1 ? "bg-blue-600 text-amber-50 stroke-1 stroke-black shadow-lg scale-105" : "bg-gray-200"}`}>Player 1</div>
+    <div
+      className={`px-6 py-2 rounded-xl text-lg font-semibold transition-all duration-300 ${currentPlayer === 2 ? "bg-red-600 text-amber-50 stroke-1 stroke-black shadow-lg scale-105" : "bg-gray-200"}`}>Player 2</div>
   </div>
-  <div
-    className={`px-6 py-2 rounded-xl text-lg font-semibold transition-all duration-300 ${
-      currentPlayer === 2 ? "bg-red-600 text-amber-50 stroke-1 stroke-black shadow-lg scale-105" : "bg-gray-200"
-    }`}
-  >
-    Player 2
-  </div>
-</div>
           
           <div className="relative">
             <div className='grid grid-cols-3 gap-5'>
@@ -262,7 +251,7 @@ function home(){
 
           </div>
           {winningLine && (
-              <svg className="absolute top-10 left-7 w-full h-full pointer-events-none">
+              <svg className="absolute md:top-10 md:left-7 -top-10 -left-16 w-full h-full pointer-events-none">
                 <line
                   x1={getCellCenter(winningLine[0])[0]}
                   y1={getCellCenter(winningLine[0])[1]}

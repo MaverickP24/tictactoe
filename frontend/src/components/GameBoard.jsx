@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import CategorySelection from './CategorySelection';
 import AnimatedTitle from './AnimatedTitle';
+import gsap from 'gsap';
 
 const emoji = ["🐐","🐫","🐈"];
 const playerCategory = {
@@ -9,14 +10,17 @@ const playerCategory = {
 };
 
 const GameBoard = () => {
+  const [showWinnerScreen, setShowWinnerScreen] = useState(false);
+  const winnerScreenRef = useRef(null);
 
+  
   const [playerMoves, setPlayerMoves] = useState({
     1: [],
     2: [],
   })
   const grid = Array(3).fill(Array(3).fill(null));
   const [board, setBoard] = useState(grid);
-
+  
   const [currentPlayer,setCurrentPlayer] = useState(1);
   
   const [winner, setWinner] = useState(null)
@@ -25,7 +29,17 @@ const GameBoard = () => {
   const [MovesCount, setMovesCount] = useState(0)
   const [score, setscore] = useState({1:0,2:0})
   const clickAudio = new Audio('/clickSound.wav');
+  const [winningLine, setWinningLine] = useState(null);
   
+  useEffect(() => {
+    if (showWinnerScreen && winnerScreenRef.current) {
+      gsap.fromTo(
+        winnerScreenRef.current,
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
+      );
+    }
+  }, []);
   
   function checkWin(board, player) {
     const positionSet = new Set();
@@ -49,9 +63,13 @@ const GameBoard = () => {
       [[0, 2], [1, 1], [2, 0]],
     ];
 
-    return winCombos.some(combination=>
-      combination.every(([r, c]) => positionSet.has(`${r},${c}`))
-    );
+    for (const combo of winCombos) {
+    if (combo.every(([r, c]) => positionSet.has(`${r},${c}`))) {
+      return combo;
+    }
+  }
+
+  return null;
   }
 
   function resetGame() {
@@ -62,6 +80,9 @@ const GameBoard = () => {
   setWinner(null);
   clickAudio.currentTime = 0;
   clickAudio.play();
+  setShowWinnerScreen(false);
+  setWinningLine(null)
+  
 }
 
 function home(){
@@ -69,52 +90,66 @@ function home(){
   setPlayerMoves({ 1: [], 2: [] });
   setCurrentPlayer(1);
   setMovesCount(0);
-    setWinner(null);
-    setPlayerSelections({ 1: null,2:null })
-    setSelection(false);
+  setWinner(null);
+  setPlayerSelections({ 1: null,2:null })
+  setSelection(false);
   clickAudio.play();
   clickAudio.currentTime = 0;
+  setscore({1:0,2:0})
+   setShowWinnerScreen(false);
+  setWinningLine(null)
     
   }
 
-  function handleClick(rowIdx,colIdx){
+  function getCellCenter([row, col]) {
+    const cellSize = 128; // Approx for md:w-40 (adjust if needed)
+    const gap = 20;        
+    const x = col * (cellSize + gap) + cellSize / 2;
+    const y = row * (cellSize + gap) + cellSize / 2;
+    return [x, y];
+  }
+
+  function handleClick(rowIdx, colIdx) {
     if (board[rowIdx][colIdx] || winner) return;
 
-    clickAudio.play()
+    clickAudio.play();
 
+    const newboard = board.map(row => [...row]);
+    const newMoves = { ...playerMoves };
 
-    const newboard = board.map(row=>[...row]);
-    const newMoves = {...playerMoves};
-    
-    const emojiPlayer = playerSelections[currentPlayer]
-    const randomEmoji  = emojiPlayer[Math.floor(Math.random()* 10)];
-    
-    if(newMoves[currentPlayer].length === 3){
-      const [oldRow,oldCol] = newMoves[currentPlayer][0]
+    const emojiPlayer = playerSelections[currentPlayer];
+    const randomEmoji = emojiPlayer[Math.floor(Math.random() * 10)];
+
+    if (newMoves[currentPlayer].length === 3) {
+      const [oldRow, oldCol] = newMoves[currentPlayer][0];
       newboard[oldRow][oldCol] = null;
       newMoves[currentPlayer].shift();
     }
-    
-    newboard[rowIdx][colIdx] = 
-    {
+
+    newboard[rowIdx][colIdx] = {
       player: currentPlayer,
       emoji: randomEmoji,
     };
-    newMoves[currentPlayer].push([rowIdx,colIdx]);
-    
-    console.log(newMoves);
+    newMoves[currentPlayer].push([rowIdx, colIdx]);
+
     setBoard(newboard);
     setPlayerMoves(newMoves);
 
-    if (checkWin(newboard,currentPlayer)){
+    const winCombo = checkWin(newboard, currentPlayer);
+    if (winCombo) {
       setWinner(currentPlayer);
-      console.log(currentPlayer)
+      setWinningLine(winCombo);
+      setscore(prev => ({
+        ...prev,
+        [currentPlayer]: prev[currentPlayer] + 1,
+      }));
+      setTimeout(() => {
+        setShowWinnerScreen(true);
+      }, 1500);
     }
-    setMovesCount((prev)=>(prev+1))
-    setCurrentPlayer(currentPlayer=== 1 ? 2 : 1);
 
-    console.log(winner)
-
+    setMovesCount(prev => prev + 1);
+    setCurrentPlayer(currentPlayer === 1 ? 2 : 1);
   }
 
   if (!Selection){
@@ -145,7 +180,8 @@ function home(){
         <div>
           <div className="flex"><div className="text-center text-2xl py-1 px-3 mb-3 border-2 rounded-lg m-auto bg-amber-600">Total Moves : {MovesCount}</div></div>
           
-          <div className='grid grid-cols-3 gap-5'>
+          <div className="relative">
+            <div className='grid grid-cols-3 gap-5'>
             
             {board.map((row, rowIdx) =>
               row.map((item, colIdx) => {
@@ -167,16 +203,38 @@ function home(){
                     : '';
 
                 return (
+                  <>
                   <div
                     key={`${rowIdx}-${colIdx}`}
                     onClick={() => handleClick(rowIdx, colIdx)}
-                    className={`w-20 h-20 md:w-40 md:h-40 border-2 border-gray-400 rounded-lg flex items-center justify-center text-7xl  ${baseColor} 
+                    className={`w-20 h-20 md:w-40 md:h-40 border-2 border-gray-400 rounded-lg flex items-center justify-center text-7xl  ${baseColor ? baseColor : "bg-[rgba(255,251,235,0.3)]"} 
                       ${!item && (currentPlayer === 1? "hover:border-blue-500" : "hover:border-red-500")}`}
                   >
                     <div>{item?.emoji}</div>
                   </div>
+                  </>
                 );
               })
+            )}
+
+            
+
+            
+
+          </div>
+          {winningLine && (
+              <svg className="absolute top-15 left-12 w-full h-full pointer-events-none">
+                <line
+                  x1={getCellCenter(winningLine[0])[0]}
+                  y1={getCellCenter(winningLine[0])[1]}
+                  x2={getCellCenter(winningLine[2])[0]}
+                  y2={getCellCenter(winningLine[2])[1]}
+                  stroke={winner === 1 ? "#3B82F6" : "#EF4444"}
+                  strokeWidth="10"
+                  strokeLinecap="round"
+                  className="animate-draw-line"
+                />
+              </svg>
             )}
           </div>
       </div>
@@ -187,7 +245,7 @@ function home(){
     
 
 
-{winner
+{winner && showWinnerScreen
 ? 
 ( 
   

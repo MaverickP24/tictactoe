@@ -207,7 +207,7 @@ function home(){
                   <div
                     key={`${rowIdx}-${colIdx}`}
                     onClick={() => handleClick(rowIdx, colIdx)}
-                    className={`w-20 h-20 md:w-40 md:h-40 border-2 border-gray-400 rounded-lg flex items-center justify-center text-7xl  ${baseColor ? baseColor : "bg-[rgba(255,251,235,0.3)]"} 
+                    className={`w-20 h-20 md:w-40 md:h-40 border-2 border-gray-400 rounded-lg flex items-center justify-center md:text-7xl text-5xl  ${baseColor ? baseColor : "bg-[rgba(255,251,235,0.3)]"} 
                       ${!item && (currentPlayer === 1? "hover:border-blue-500" : "hover:border-red-500")}`}
                   >
                     <div>{item?.emoji}</div>
@@ -252,24 +252,24 @@ function home(){
   <div className="mt-4 text-center space-x-5 bg-[url('/background.jpg')] bg-cover bg-center w-screen min-h-screen absolute left-0 -top-4 p-10">
           <AnimatedTitle
             title={`B l i <b>n</b> k T<b>A</b>c T<b>o</b>e`}
-            containerClass="text-8xl text-[#DFDFF0] text-center pb-10 hero-heading special-font"
+            containerClass="text-[10vw] pt-10 md:pt-0 md:text-[7vw] text-[#DFDFF0] text-center pb-10 hero-heading special-font"
           />
-    <h2 className="text-3xl font-bold mb-2 text-green-600 ">Congratulations</h2>
-    <h2 className='text-3xl text-fuchsia-100 py-6'>Player
+    <h2 className="md:text-3xl text-xl font-bold mb-2 text-green-600 ">Congratulations</h2>
+    <h2 className='md:text-3xl text-xl  text-fuchsia-100 py-6'>Player
       <br/>
       <div className="text-[12vw]">{winner}</div>
       Wins
     </h2>
 
-    <div className="flex justify-center items-center space-x-20 my-10 text-4xl text-amber-50">
+    <div className="flex justify-center items-center space-x-20  mt-5 text-4xl text-amber-50">
       <div className="flex flex-col gap-3">
-        <h1 className="text-center text-4xl text-amber-50">Player 1</h1>
-        <h2 className='text-4xl text-amber-800'>{score[1]}</h2>
+        <h1 className="text-center md:text-4xl text-2xl  text-amber-50">Player 1</h1>
+        <h2 className='md:text-4xl text-2xl text-amber-800'>{score[1]}</h2>
       </div>
       <div>:</div>
       <div className="flex flex-col  gap-3">
-        <h1 className="text-center text-4xl text-amber-50">Player 2</h1>
-        <h2 className='text-4xl text-amber-800'>{score[2]}</h2>
+        <h1 className="text-center md:text-4xl text-2xl text-amber-50">Player 2</h1>
+        <h2 className='md:text-4xl text-2xl text-amber-800'>{score[2]}</h2>
       </div>
     </div>
 

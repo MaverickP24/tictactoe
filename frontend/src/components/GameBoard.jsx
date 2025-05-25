@@ -22,6 +22,7 @@ const GameBoard = () => {
   const [Selection, setSelection] = useState(false);
   const [playerSelections, setPlayerSelections] = useState({ 1: null,2:null });
   const [MovesCount, setMovesCount] = useState(0)
+  const [score, setscore] = useState({1:0,2:0})
   const clickAudio = new Audio('/clickSound.wav');
   
   
@@ -86,7 +87,6 @@ function home(){
     
     const emojiPlayer = playerSelections[currentPlayer]
     const randomEmoji  = emojiPlayer[Math.floor(Math.random()* 10)];
-    
     
     if(newMoves[currentPlayer].length === 3){
       const [oldRow,oldCol] = newMoves[currentPlayer][0]
@@ -190,8 +190,29 @@ function home(){
 ? 
 ( 
   
-  <div className="mt-4 text-center space-x-5 bg-black w-screen h-screen absolute left-0 -top-4">
-    <h2 className="text-xl font-bold mb-2 text-green-600">🎉 Player {winner} Wins!</h2>
+  <div className="mt-4 text-center space-x-5 bg-[url('/background.jpg')] bg-cover bg-center w-screen min-h-screen absolute left-0 -top-4 p-10">
+    <h1 className="text-8xl text-[#DFDFF0] text-center py-10 hero-heading special-font ">Bli<b>n</b>k T<b>A</b>c T<b>o</b>e</h1>
+    <h2 className="text-3xl font-bold mb-2 text-green-600 ">Congratulations</h2>
+    <h2 className='text-3xl text-fuchsia-100 py-6'>Player
+      <br/>
+      <div className="text-[12vw]">{winner}</div>
+      Wins
+    </h2>
+
+    <div className="flex justify-center items-center space-x-20 my-10 text-4xl text-amber-50">
+      <div className="flex flex-col gap-3">
+        <h1 className="text-center text-4xl text-amber-50">Player 1</h1>
+        <h2 className='text-4xl text-amber-800'>{score[1]}</h2>
+      </div>
+      <div>:</div>
+      <div className="flex flex-col  gap-3">
+        <h1 className="text-center text-4xl text-amber-50">Player 2</h1>
+        <h2 className='text-4xl text-amber-800'>{score[2]}</h2>
+      </div>
+    </div>
+
+    <div className="flex"><div className="text-center text-2xl py-1 px-3 my-10 border-2 rounded-lg m-auto bg-amber-600">Total Moves : {MovesCount}</div></div>
+
     <button 
       onClick={home}
       className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg">

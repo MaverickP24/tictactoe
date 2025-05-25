@@ -304,7 +304,7 @@ function home(){
   
   <div className="mt-5 md:mt-0 text-center space-x-5 bg-[url('/background.jpg')] bg-cover bg-center w-screen min-h-screen absolute left-0 -top-4 p-10 flex justify-center flex-col items-center">
       <AnimatedTitle
-        title={`B l i <b>n</b> k T<b>A</b>c T<b>o</b>e`}
+        title={`B l i <b>n</b> k - T<b>A</b>c - T<b>o</b>e`}
         containerClass="text-[10vw] pt-5 md:pt-0 md:text-[7vw] text-[#DFDFF0] text-center pb-0 hero-heading special-font"
       />
     <div className="bg-[rgba(255,255,255,0)] ">

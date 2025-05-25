@@ -10,7 +10,7 @@ const App = () => {
         <div>
           
           <AnimatedTitle
-            title={`B l i <b>n</b> k T<b>A</b>c T<b>o</b>e`}
+            title={`B l i <b>n</b> k - T<b>A</b>c - T<b>o</b>e`}
             containerClass="text-[14vw] md:text-[8vw] text-[#DFDFF0] text-center pb-10 hero-heading special-font"
           />
 

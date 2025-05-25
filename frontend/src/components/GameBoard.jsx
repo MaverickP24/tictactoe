@@ -316,12 +316,12 @@ function home(){
       </h2>
 
       <div className="flex justify-center items-center space-x-20  mt-5 text-4xl text-amber-50">
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 bg-[#262222a2] py-4 px-2 border-1 ">
           <h1 className="text-center md:text-4xl text-2xl  text-amber-50">Player 1</h1>
           <h2 className='md:text-4xl text-2xl text-amber-800'>{score[1]}</h2>
         </div>
         <div>:</div>
-        <div className="flex flex-col  gap-3">
+        <div className="flex flex-col bg-[#262222a2] gap-3 py-4 px-2 border-1">
           <h1 className="text-center md:text-4xl text-2xl text-amber-50">Player 2</h1>
           <h2 className='md:text-4xl text-2xl text-amber-800'>{score[2]}</h2>
         </div>

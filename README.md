@@ -2,11 +2,6 @@
 
 A modern twist on classic Tic Tac Toe — now with **emoji categories**, **vanishing moves**, **animated visuals**, and **sound effects**!
 
-🔗 **Live Demo** – [Coming Soon]  
-💻 **View Code on GitHub** – [Your GitHub Repo Link Here]
-
----
-
 ## ⚙️ Tech Stack
 
 - React.js (with Hooks)
